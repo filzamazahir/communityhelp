@@ -14,4 +14,5 @@ class Locations(Controller):
         """ 
         self.models['WelcomeModel'].get_all_users()
         """
+        print "location"
         return self.load_view('index.html')
