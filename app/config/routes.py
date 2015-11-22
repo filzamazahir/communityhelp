@@ -5,6 +5,7 @@ from system.core.router import routes
 
 
 routes['default_controller'] = 'Locations'
+# routes['GET']['/get-homeless'] = 'Locations#get_homeless'
 
 
 
@@ -16,13 +17,13 @@ routes['default_controller'] = 'Locations'
     You can add routes and specify their handlers as follows:
 
     routes['VERB']['/URL/GOES/HERE'] = 'Controller#method'
-    
+
     If the http verb is not provided pylot will assume that you want the 'GET' verb.
 
     You can also use route parameters by using the angled brackets like so:
     routes['PUT']['/users/<int:id>'] = 'users#update'
 
-    Note that the parameter can have a specified type (int, string, float, path). 
+    Note that the parameter can have a specified type (int, string, float, path).
     If the type is not specified it will default to string
 
     Here is an example of the restful routes for users:
