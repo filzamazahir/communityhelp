@@ -6,17 +6,17 @@
   <link href="https://fonts.googleapis.com/css?family=Sigmar+One" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjeTmt5SLsX30waR4XqLEVpHL3TTHwB6g&signed_in=true&callback=initMap" async defer></script>
   <script src="../static/js/jquery-2.1.4.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="../static/css/styles.css" type="text/css">
   <script src="../static/js/script.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjeTmt5SLsX30waR4XqLEVpHL3TTHwB6g&signed_in=true&callback=initMap" async defer></script>
   <title>Community Help</title>
 
 </head>
 
-<body onload="initialize()">
+<body>
   <div class="container">
     <div class="row">
       <h1 id="app-title">Community Help</h1>
@@ -24,9 +24,9 @@
       <div class="col-xs-6" id="show-info">
 
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Enter Zip Code">
+          <input id="address" type="text" class="form-control" placeholder="Enter Zip Code">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button">Find!</button>
+            <button class="btn btn-primary" type="button" id="find">Find!</button>
           </span>
         </div>
         <button class="btn btn-default" id="user-current-location"><i class="fa fa-location-arrow"> Use Your Current Location</i></button>
@@ -61,6 +61,10 @@
       </div>
       <div class="col-xs-6">
         <!-- this div is for google map -->
+        <div id="floating-panel">
+          <!-- <input id="address" type="textbox" value="Sydney, NSW">
+          <input id="submit" type="button" value="Geocode"> -->
+        </div>
         <div id="map"></div>
       </div>
     </div>
@@ -75,4 +79,5 @@
   </div>
 
 </body>
+
 </html>
