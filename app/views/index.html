@@ -6,16 +6,19 @@
   <link href="https://fonts.googleapis.com/css?family=Sigmar+One" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjeTmt5SLsX30waR4XqLEVpHL3TTHwB6g&signed_in=true&callback=initMap" async defer></script>
+  <script src="../static/js/jquery-2.1.4.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="../static/css/styles.css" type="text/css">
+  <script src="../static/js/script.js"></script>
   <title>Community Help</title>
+
 </head>
 
-<body>
+<body onload="initialize()">
   <div class="container">
     <div class="row">
-
       <h1 id="app-title">Community Help</h1>
       <!-- this section shows the list of the location where homeless people located -->
       <div class="col-xs-6" id="show-info">
@@ -26,9 +29,10 @@
             <button class="btn btn-primary" type="button">Find!</button>
           </span>
         </div>
-        <p><i class="fa fa-location-arrow"> Use Your Current Location</i></p>
+        <button class="btn btn-default" id="user-current-location"><i class="fa fa-location-arrow"> Use Your Current Location</i></button>
         <div id="location-list">
           <h3>Locations where people may need your help!</h3>
+          <p id="error-message"></p>
           <table class="table table-hover">
             <thead>
               <tr class="active">
@@ -37,6 +41,7 @@
               </tr>
             </thead>
             <tbody>
+              <!-- this will be dynamic section to display location list -->
               <tr>
                 <td>331 E Evelyn Ave, Mountain View, CA 94041</td>
                 <td>1 person, around 30 years old, need food and cloth.</td>
@@ -54,8 +59,9 @@
         </div>
 
       </div>
-      <div class="col-xs-6" id="map">
-        <img class="img-responsive" src="../../extra/img2.png">
+      <div class="col-xs-6">
+        <!-- this div is for google map -->
+        <div id="map"></div>
       </div>
     </div>
     <!-- end of the show info section -->
@@ -63,13 +69,10 @@
 
     <!-- report area -->
     <div id="report-info row col-md-12">
-
-            <textarea class="form-control" name="message" rows="8" cols="50" placeholder="Enter message"></textarea>
-            <button id="report" class="btn btn-primary col-md-4 col-md-offset-4">Report</button>
-
-
+      <textarea class="form-control" name="message" rows="8" cols="50" placeholder="Enter message"></textarea>
+      <button id="report" class="btn btn-primary col-md-4 col-md-offset-4">Report</button>
     </div>
   </div>
-</body>
 
+</body>
 </html>
