@@ -1,0 +1,23 @@
+#app-title{
+  text-align: center;
+  margin: 40px auto;
+  font-family: 'Sigmar One', cursive;
+}
+.fa{
+  color: rgb(0, 130, 224);
+}
+.table{
+  margin-top: 20px;
+}
+#report-info{
+  margin-top: 50px;
+}
+#location-list{
+  margin-top: 50px;
+}
+#user-location-map{
+  /*width: 100px;*/
+}
+#report{
+  margin-top: 20px;
+}
