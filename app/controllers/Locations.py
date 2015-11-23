@@ -32,7 +32,9 @@ class Locations(Controller):
         #     'lat':request.form['lat'],
         #     'lng':request.form['lng']
         # }
-        
+
+        #For zipcode or city, change user input to lat and long, then use the same formula
+
         #For testing purposes:
         current_location = {
             'lat': 37.401714,
