@@ -11,8 +11,8 @@ class Locations(Controller):
 
     #Load the index page - with San Jose as default location
     def index(self):
-        result=self.models['Location'].get_all_locations();
-        return self.load_view('index.html',res=result)
+        # result=self.models['Location'].get_all_locations();
+        return self.load_view('index.html')
 
 
     #Insert new record into database
