@@ -30,18 +30,10 @@ class Locations(Controller):
 
 
     #Get nearby locations from database
-    def get_locations(self):
-        # current_location = {
-        #     'lat':request.form['lat'],
-        #     'lng':request.form['lng']
-        # }
-
-        #For zipcode or city, change user input to lat and long, then use the same formula
-
-        #For testing purposes:
+    def get_locations(self, lat, lng):
         current_location = {
-            'lat': 37.401714,
-            'lng': -121.955815
+            'lat': lat,
+            'lng': lng
         }
         nearby_locations = self.models['Location'].get_nearby_locations(current_location)
         print nearby_locations
