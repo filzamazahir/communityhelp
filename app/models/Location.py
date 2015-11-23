@@ -10,9 +10,10 @@ class Location(Model):
 
     # Insert locations into database
     def insert_into_db(self,data_info):
-        query="INSERT INTO locations(lat,lng,comments,address,created_at,updated_at)VALUES(%s,%s,%s,%s,NOW(),NOW())"
-        data=[data_info['lat'],data_info['lng'],data_info['comments'],data_info['address']];
-        return self.db.query_db(query,data)
+        query="INSERT INTO locations(lat,lng,address,comment,created_at,updated_at)VALUES(%s,%s,%s,%s,NOW(),NOW())"
+        data=[data_info['lat'],data_info['lng'],data_info['address'],data_info['comments']];
+       	self.db.query_db(query,data)
+       	return 
     
 
     # Get locations within 5 miles, based on the Haversine formula
