@@ -6,6 +6,8 @@ from system.core.router import routes
 
 routes['default_controller'] = 'Locations'
 routes['POST']['/insert']='Locations#insert_record'
+routes['/get_locations']='Locations#get_locations'
+#routes['POST']['/get_locations']='Locations#get_locations'
 
 
 
