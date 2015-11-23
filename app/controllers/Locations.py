@@ -22,9 +22,7 @@ class Locations(Controller):
         'lng':request.form['lng'],
         'comments':request.form['comments'],
         'address':request.form['address'],
-        # 'zip_code':request.form['zip_code']
         }
-        print "inserting"
         self.models['Location'].insert_into_db(data)
         return redirect('/')
 
