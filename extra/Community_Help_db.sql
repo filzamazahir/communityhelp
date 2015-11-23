@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `Community_Help_db`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `lat` FLOAT NULL,
   `lng` FLOAT NULL,
+  `address` TEXT NULL,
   `comment` TEXT NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
