@@ -11,7 +11,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="../static/css/styles.css" type="text/css">
   <script src="../static/js/script.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjeTmt5SLsX30waR4XqLEVpHL3TTHwB6g&signed_in=true&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkDY7F_SDw4JT9Ev42KzPBLC-YsfeaeGs&signed_in=true&callback=initMap" async defer></script>
   <title>Community Help</title>
 
 </head>
@@ -72,10 +72,111 @@
     <hr>
 
     <!-- report area -->
-    <div id="report-info row col-md-12">
+    <!-- <div id="report-info row col-md-12">
       <textarea class="form-control" name="message" rows="8" cols="50" placeholder="Enter message"></textarea>
-      <button id="report" class="btn btn-primary col-md-4 col-md-offset-4">Report</button>
+      <button id="report" class="btn btn-primary col-md-4 col-md-offset-4">Report</button> -->
+    <!-- </div> -->
+
+    <div class="main_data">
+        <button class="btn btn-primary col-md-4 col-md-offset-4" onclick="getLocation()" >Get your current Location</button>
+        <textarea class="form-control" name="comments" rows="6" cols="40" placeholder="Comments" id="comments"></textarea>
+        <button onclick="report_data()" type="submit" name="report" id="report" >Submit</button>
+
     </div>
+    <div id="map_placeholder"></div>
+    <script>
+            
+            var latitude=0;
+            var longitude=0;
+            var address="";
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                latitude=position.coords.latitude;
+                longitude=position.coords.longitude; 
+                
+                // For displaying static image of the current location
+                var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+                var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+                +latlon+"&zoom=14&size=400x300&sensor=false";
+                // document.getElementById("map_placeholder").innerHTML = "<img src='"+img_url+"'>";
+                getAddressFromLatLang(latitude,longitude);
+            }
+
+            
+            function initMap() {
+                var latlng={lat:latitude,lng:longitude};
+                var map = new google.maps.Map(document.getElementById('map_placeholder'), {
+                center: latlng,
+                zoom: 5
+                });
+                
+            }
+            function showError(error) {
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        x.innerHTML = "User denied the request for Geolocation."
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        x.innerHTML = "Location information is unavailable."
+                        break;
+                    case error.TIMEOUT:
+                        x.innerHTML = "The request to get user location timed out."
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        x.innerHTML = "An unknown error occurred."
+                        break;
+                }
+              }
+               function getAddressFromLatLang(lat,lng){
+                    
+                    var geocoder = new google.maps.Geocoder();
+                    var latLng = new google.maps.LatLng(lat, lng);
+                    geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                      if (results[0]) {
+                        console.log(results[0].formatted_address);
+                        address=results[0].formatted_address;
+                      }
+                    }else{
+                      alert("Geocode was not successful for the following reason: " + status);
+                    }
+                  
+                });
+                }
+
+                function report_data(){
+                    user_comments=$('#comments').val();
+                    user_data={'lat':latitude,'lng':longitude,'address':address,'comments':user_comments};
+                    $.ajax({type:'POST',
+                    data:user_data,
+                    url:"/insert",
+                    success:function(data){
+                        $('.main_data').append('<input type="hidden" id="lat" name="Lat" value=' + latitude+ '>');
+                        $('.main_data').append('<input type="hidden" id="lng" name="Lng" value=' + longitude+ '>');
+                        $('.main_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
+                        //resetting value of the comment field
+                        $('#comments').val('');
+                        // $('lat').val('');
+                        // $('lng').val('');
+                        // $('address').val('');
+                    console.log("Successfully inserted the user input",user_data);
+                   }
+
+            });
+            }
+        
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkDY7F_SDw4JT9Ev42KzPBLC-YsfeaeGs&signed_in=true&callback=initMap">
+  </script>
+
   </div>
 
 </body>

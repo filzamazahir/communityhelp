@@ -12,12 +12,12 @@ class DBConfig(object):
 class DevelopmentDBConfig(DBConfig):
     DB_USERNAME = 'root'
     DB_PASSWORD = 'root'
-    DB_DATABASE_NAME = 'locations_db'
+    DB_DATABASE_NAME = 'Community_Help'
     DB_HOST = 'localhost'
     DB_PORT = 8889
     """ unix_socket is used for connecting with MAMP. Take this out if you aren't using MAMP """
     DB_OPTIONS = {
-        'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock'
+        'unix_socket': '/tmp/mysql.sock'
     }
 
 """ Put Staging Specific Configurations here """

@@ -5,8 +5,7 @@ from system.core.router import routes
 
 
 routes['default_controller'] = 'Locations'
-# routes['GET']['/get-homeless'] = 'Locations#get_homeless'
-
+routes['POST']['/insert']='Locations#insert_record'
 
 
 
