@@ -68,17 +68,18 @@ function getLatLonFromAddress(geocoder, resultsMap) {
       if (status === google.maps.GeocoderStatus.OK) {
         $("#error-message").html("");
         resultsMap.setCenter(results[0].geometry.location);
-        var lat = results[0].geometry.location.lat();
-        var lon = results[0].geometry.location.lng();
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
 
-        get_homeless_location();
+        get_homeless_location(latitude, longitude);
 
       }
   });
 }
 
 function get_homeless_location(latitude, longitude){
-  $.get( "/get-homeless/"+latitude+'/'+longitude, function(result) {
+  $.get( "/get-locations/"+latitude+'/'+longitude, function(result) {
+    console.log(result);
   //display result in div with id location-list;
 });
 }
