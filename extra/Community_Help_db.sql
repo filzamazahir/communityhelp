@@ -20,7 +20,7 @@ USE `Community_Help_db` ;
 CREATE TABLE IF NOT EXISTS `Community_Help_db`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `lat` FLOAT NULL,
-  `long` FLOAT NULL,
+  `lng` FLOAT NULL,
   `comment` TEXT NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
