@@ -10,16 +10,18 @@ class Locations(Controller):
 
 
     def index(self):
-        
-        return self.load_view('index.html')
+        result=self.models['Location'].get_all_locations();
+        return self.load_view('index.html',res=result)
 
     def insert_record(self):
     	data={
         'lat':request.form['lat'],
         'lng':request.form['lng'],
         'comments':request.form['comments'],
-        'address':request.form['address']
+        'address':request.form['address'],
+        # 'zip_code':request.form['zip_code']
         }
-        result=self.models['Location'].insert_into_db(data)
+        print "inserting"
+        self.models['Location'].insert_into_db(data)
         return redirect('/')
 

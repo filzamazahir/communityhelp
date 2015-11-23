@@ -13,7 +13,11 @@
   <script src="../static/js/script.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkDY7F_SDw4JT9Ev42KzPBLC-YsfeaeGs&signed_in=true&callback=initMap" async defer></script>
   <title>Community Help</title>
-
+  <style>
+      #map_placeholder {
+        height: 25%;
+      }
+    </style>
 </head>
 
 <body>
@@ -42,18 +46,10 @@
             </thead>
             <tbody>
               <!-- this will be dynamic section to display location list -->
-              <tr>
-                <td>331 E Evelyn Ave, Mountain View, CA 94041</td>
-                <td>1 person, around 30 years old, need food and cloth.</td>
-              </tr>
-              <tr>
-                <td>330 Potrero Ave, Sunnyvale, CA 94085</td>
-                <td>1 woman with a kid, need kid's cloth and food.</td>
-              </tr>
-              <tr>
-                <td>3665 Flora Vista Ave, Santa Clara, CA 95051</td>
-                <td>a homeless guy need your help!</td>
-              </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                    </tr>
             </tbody>
           </table>
         </div>
@@ -62,8 +58,6 @@
       <div class="col-xs-6">
         <!-- this div is for google map -->
         <div id="floating-panel">
-          <!-- <input id="address" type="textbox" value="Sydney, NSW">
-          <input id="submit" type="button" value="Geocode"> -->
         </div>
         <div id="map"></div>
       </div>
@@ -72,23 +66,19 @@
     <hr>
 
     <!-- report area -->
-    <!-- <div id="report-info row col-md-12">
-      <textarea class="form-control" name="message" rows="8" cols="50" placeholder="Enter message"></textarea>
-      <button id="report" class="btn btn-primary col-md-4 col-md-offset-4">Report</button> -->
-    <!-- </div> -->
-
     <div class="main_data">
-        <button class="btn btn-primary col-md-4 col-md-offset-4" onclick="getLocation()" >Get your current Location</button>
-        <textarea class="form-control" name="comments" rows="6" cols="40" placeholder="Comments" id="comments"></textarea>
+        <!-- <button class="btn btn-default" id="user-current-location"><i class="fa fa-location-arrow"> Use Your Current Location</i></button> -->
+        <button class="btn btn-default " onclick="getLocation()" ><i class="fa fa-location-arrow">Get your current Location</i></button>
+        <textarea class="form-control" name="comments" rows="6" cols="30" placeholder="Comments" id="comments"></textarea>
         <button onclick="report_data()" type="submit" name="report" id="report" >Submit</button>
 
     </div>
     <div id="map_placeholder"></div>
     <script>
-            
             var latitude=0;
             var longitude=0;
             var address="";
+            var zip_code=0;
             function getLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -97,15 +87,12 @@
                 }
             }
             function showPosition(position) {
+
                 latitude=position.coords.latitude;
                 longitude=position.coords.longitude; 
                 
                 // For displaying static image of the current location
                 var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-                var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-                +latlon+"&zoom=14&size=400x300&sensor=false";
-                // document.getElementById("map_placeholder").innerHTML = "<img src='"+img_url+"'>";
                 getAddressFromLatLang(latitude,longitude);
             }
 
@@ -143,11 +130,12 @@
                       if (results[0]) {
                         console.log(results[0].formatted_address);
                         address=results[0].formatted_address;
-                      }
+                        zip_code=results[0].address_components[6].long_name;
+                        console.log(zip_code);
                     }else{
                       alert("Geocode was not successful for the following reason: " + status);
                     }
-                  
+                  }
                 });
                 }
 
@@ -161,16 +149,15 @@
                         $('.main_data').append('<input type="hidden" id="lat" name="Lat" value=' + latitude+ '>');
                         $('.main_data').append('<input type="hidden" id="lng" name="Lng" value=' + longitude+ '>');
                         $('.main_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
+                        $('.main_data').append('<input type="hidden" id="zipcode" name="zipcode" value=' + zip_code+ '>');
                         //resetting value of the comment field
                         $('#comments').val('');
-                        // $('lat').val('');
-                        // $('lng').val('');
-                        // $('address').val('');
                     console.log("Successfully inserted the user input",user_data);
                    }
 
             });
             }
+
         
     </script>
     <script async defer
