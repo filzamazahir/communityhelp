@@ -175,28 +175,30 @@ function showError(error) {
   }
 }
 
-function report_data(lat, lng, address) {
-  userComments = $('#comments').val();
-  userData = {
-    'lat': lat,
-    'lng': lng,
-    'address': address,
-    'comments': userComments
-  };
-  console.log(userData);
-  $.ajax({
-    url: "/insert",
-    type: 'POST',
-    data: userData,
-    success: function(data) {
-      $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat + '>');
-      $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng + '>');
-      $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address + '>');
-      $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
-      //resetting value of the comment field
-      $('#comments').val('');
-      console.log("Successfully inserted the user input", userData);
-      $(".loading-gif-bottom").hide();
-    }
-  });
+
+function report_data(lat,lng,address){
+    userComments=$('#comments').val();
+    userData={'lat':lat,'lng':lng,'address':address,'comments':userComments};
+    console.log(userData);
+    $.ajax({url:'/insert',
+          type:'POST',
+          data:userData,
+          success:function(data){
+            // do something with data
+            console.log(data);
+            $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
+            $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
+            $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
+            if(data.status ){
+              $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
+            }
+            else{
+               $('#users_current_location').html('<p>The location already exists within a quarter mile </p>');
+            }
+            
+            //resetting value of the comment field
+            $('#comments').val('');
+            $(".loading-gif-bottom").hide();
+   }
+});
 }
