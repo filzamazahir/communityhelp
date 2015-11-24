@@ -1,25 +1,33 @@
-$(document).ready(function(){
-    $(".loading-gif").hide();
-    $(".loading-gif-bottom").hide();
+$(document).ready(function() {
+  $(".loading-gif").hide();
+  $(".loading-gif-bottom").hide();
 
-    $('form').submit(function(){
-        $(".loading-gif-bottom").show();
-        getLocationToInsert();
-        return false;
-    });
+  $('form').submit(function() {
+    $(".loading-gif-bottom").show();
+    getLocationToInsert();
+    return false;
+  });
 
 
-    $("#find").on("click", function() {
+  $("#find").on("click", function() {
+    var geocoderMap = initMap();
+    getLatLonFromAddress(geocoderMap['geocoder'], geocoderMap['map']);
+  });
+
+  // get user input when press enter key
+  $("#address").keypress(function(e) {
+    if (e.which === 13) {
       var geocoderMap = initMap();
       getLatLonFromAddress(geocoderMap['geocoder'], geocoderMap['map']);
-    });
+    }
+  });
 
-    $("#user-current-location").on("click", function() {
-      $(".loading-gif").show();
-      console.log("Inside user current click");
-      var geocoderMap = initMap();
-      getCurrentLocation(geocoderMap['geocoder'], geocoderMap['map']);
-      return false;
+  $("#user-current-location").on("click", function() {
+    $(".loading-gif").show();
+    console.log("Inside user current click");
+    var geocoderMap = initMap();
+    getCurrentLocation(geocoderMap['geocoder'], geocoderMap['map']);
+    return false;
   });
 });
 
@@ -35,26 +43,29 @@ function initMap() {
   });
   var geocoder = new google.maps.Geocoder();
 
-  return {'geocoder': geocoder, 'map': map};
+  return {
+    'geocoder': geocoder,
+    'map': map
+  };
 }
 
 
 //Gets the current location of user, then calls getNearybyLocations()
 function getCurrentLocation(geocoder, resultsMap) {
- if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(function (position){
-       var latlng = {
-       lat: position.coords.latitude,
-       lng: position.coords.longitude
-       };
-       console.log(latlng);
-       $(".loading-gif").hide();
-       getNearbyLocations(latlng['lat'], latlng['lng'], resultsMap);
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var latlng = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      console.log(latlng);
+      $(".loading-gif").hide();
+      getNearbyLocations(latlng['lat'], latlng['lng'], resultsMap);
 
     });
- } else {
-   console.log($("#error-message").html("<p>Geolocation is not supported by this browser.</p>"));
- }
+  } else {
+    console.log($("#error-message").html("<p>Geolocation is not supported by this browser.</p>"));
+  }
 }
 
 
@@ -63,42 +74,43 @@ function getCurrentLocation(geocoder, resultsMap) {
 function getLatLonFromAddress(geocoder, resultsMap) {
   var address = document.getElementById('address').value;
   geocoder.geocode({
-      'address': address
-    }, function(results, status) {
-      if (status === google.maps.GeocoderStatus.OK) {
-        $("#error-message").html("");
-        resultsMap.setCenter(results[0].geometry.location);
-        var latitude = results[0].geometry.location.lat();
-        var longitude = results[0].geometry.location.lng();
-        console.log(latitude);
-        console.log(longitude);
-        getNearbyLocations(latitude, longitude, resultsMap);
-      }
-
-      else {
+    'address': address
+  }, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      $("#error-message").html("");
+      resultsMap.setCenter(results[0].geometry.location);
+      var latitude = results[0].geometry.location.lat();
+      var longitude = results[0].geometry.location.lng();
+      console.log(latitude);
+      console.log(longitude);
+      getNearbyLocations(latitude, longitude, resultsMap);
+    } else {
       $("#error-message").html("<p>Address is not availabble.</p>");
-      }
+    }
 
   });
 }
 
 //Gets nearby locations given a latitude & longitude
-function getNearbyLocations(latitude, longitude, resultsMap){
+function getNearbyLocations(latitude, longitude, resultsMap) {
 
-  $.get( "/get_locations/"+latitude+"/"+longitude, function(result) {
+  $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
     $('#location-table').html("<thead><th>Location</th><th>Comment</th></thead><tbody></tbody>");
 
-    for (var i =0; i< result['nearby_locations'].length; i++) {
+    for (var i = 0; i < result['nearby_locations'].length; i++) {
 
       //append to table for each location
       var html_location = "";
-      html_location += "<tr><td>"+result['nearby_locations'][i]['address']+"</td>"
-      html_location += "<td>"+result['nearby_locations'][i]['comment']+"</td></tr>";
+      html_location += "<tr><td>" + result['nearby_locations'][i]['address'] + "</td>"
+      html_location += "<td>" + result['nearby_locations'][i]['comment'] + "</td></tr>";
       $('#location-table').append(html_location);
 
       //pin a marker for each location
-      var currentLatLng = {lat: result['nearby_locations'][i]['lat'], lng: result['nearby_locations'][i]['lng']};
+      var currentLatLng = {
+        lat: result['nearby_locations'][i]['lat'],
+        lng: result['nearby_locations'][i]['lng']
+      };
       var marker = new google.maps.Marker({
         position: currentLatLng,
         map: resultsMap,
@@ -116,65 +128,73 @@ function getNearbyLocations(latitude, longitude, resultsMap){
 //report data logic
 function getLocationToInsert() {
   if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position){
-        var latitLongit = {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var latitLongit = {
         lat: position.coords.latitude,
         lon: position.coords.longitude
-        };
-        console.log(latitLongit);
-        // var currentAddress=getAddressFromLatLang(latlng['lat'],latlng['lon']);
-        var geocoder = new google.maps.Geocoder();
-        var latLng = new google.maps.LatLng(latitLongit.lat, latitLongit.lon);
-        geocoder.geocode( { 'latLng': latLng}, function(results, status) {
+      };
+      console.log(latitLongit);
+      // var currentAddress=getAddressFromLatLang(latlng['lat'],latlng['lon']);
+      var geocoder = new google.maps.Geocoder();
+      var latLng = new google.maps.LatLng(latitLongit.lat, latitLongit.lon);
+      geocoder.geocode({
+        'latLng': latLng
+      }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[0]) {
             console.log(results[0].formatted_address);
-            var address=results[0].formatted_address;
-            report_data(latitLongit.lat, latitLongit.lon,address);
-        }else{
-          alert("Geocode was not successful for the following reason: " + status);
+            var address = results[0].formatted_address;
+            report_data(latitLongit.lat, latitLongit.lon, address);
+          } else {
+            alert("Geocode was not successful for the following reason: " + status);
+          }
         }
-      }
+      });
     });
-  });
   } else {
     console.log($("#error-message").html("<p>Geolocation is not supported by this browser.</p>"));
   }
 }
 
 function showError(error) {
-switch(error.code) {
+  switch (error.code) {
     case error.PERMISSION_DENIED:
-        x.innerHTML = "User denied the request for Geolocation."
-        break;
+      x.innerHTML = "User denied the request for Geolocation."
+      break;
     case error.POSITION_UNAVAILABLE:
-        x.innerHTML = "Location information is unavailable."
-        break;
+      x.innerHTML = "Location information is unavailable."
+      break;
     case error.TIMEOUT:
-        x.innerHTML = "The request to get user location timed out."
-        break;
+      x.innerHTML = "The request to get user location timed out."
+      break;
     case error.UNKNOWN_ERROR:
-        x.innerHTML = "An unknown error occurred."
-        break;
-}
+      x.innerHTML = "An unknown error occurred."
+      break;
+  }
 }
 
-function report_data(lat,lng,address){
-    userComments=$('#comments').val();
-    userData={'lat':lat,'lng':lng,'address':address,'comments':userComments};
-    console.log(userData);
-    $.ajax({url:"/insert",
-          type:'POST',
-          data:userData,
-          success:function(data){
-            $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
-            $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
-            $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
-            $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
-            //resetting value of the comment field
-            $('#comments').val('');
-            console.log("Successfully inserted the user input",userData);
-            $(".loading-gif-bottom").hide();
-   }
-});
+function report_data(lat, lng, address) {
+  userComments = $('#comments').val();
+  userData = {
+    'lat': lat,
+    'lng': lng,
+    'address': address,
+    'comments': userComments
+  };
+  console.log(userData);
+  $.ajax({
+    url: "/insert",
+    type: 'POST',
+    data: userData,
+    success: function(data) {
+      $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat + '>');
+      $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng + '>');
+      $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address + '>');
+      $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
+      //resetting value of the comment field
+      $('#comments').val('');
+      console.log("Successfully inserted the user input", userData);
+      $(".loading-gif-bottom").hide();
+    }
+  });
 }
