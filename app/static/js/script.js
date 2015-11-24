@@ -16,7 +16,6 @@ $(document).ready(function(){
 
     $("#user-current-location").on("click", function() {
       $(".loading-gif").show();
-      console.log("Inside user current click");
       var geocoderMap = initMap();
       getCurrentLocation(geocoderMap['geocoder'], geocoderMap['map']);
       return false;
