@@ -29,11 +29,11 @@ class Locations(Controller):
 
     #Get nearby locations from database
     def get_locations(self, lat, lng):
-        current_location = {
-            'lat': lat,
-            'lng': lng
+        given_location = {
+            'lat': float(lat),
+            'lng': float(lng)
         }
-        nearby_locations = self.models['Location'].get_nearby_locations(current_location)
-        print nearby_locations
-        return redirect ('/')
+        nearby_locations = self.models['Location'].get_nearby_locations(given_location)
+        return jsonify(nearby_locations = nearby_locations)
+       
 
