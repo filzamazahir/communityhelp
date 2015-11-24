@@ -29,3 +29,10 @@
   width: 600px;
   height: 500px;
 }
+#get_Location{
+  display: inline-block;
+}
+#users_current_location{
+  margin-left: 40px;
+  display: inline-block;
+}
