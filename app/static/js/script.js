@@ -1,5 +1,9 @@
 $(document).ready(function(){
+    $(".loading-gif").hide();
+    $(".loading-gif-bottom").hide();
+
     $('form').submit(function(){
+        $(".loading-gif-bottom").show();
         getLocationToInsert();
         return false;
     });
@@ -11,10 +15,11 @@ $(document).ready(function(){
     });
 
     $("#user-current-location").on("click", function() {
+      $(".loading-gif").show();
       console.log("Inside user current click");
       var geocoderMap = initMap();
       getCurrentLocation(geocoderMap['geocoder'], geocoderMap['map']);
-    
+      return false;
   });
 });
 
@@ -43,9 +48,10 @@ function getCurrentLocation(geocoder, resultsMap) {
        lng: position.coords.longitude
        };
        console.log(latlng);
+       $(".loading-gif").hide();
        getNearbyLocations(latlng['lat'], latlng['lng'], resultsMap);
 
-    }); 
+    });
  } else {
    console.log($("#error-message").html("<p>Geolocation is not supported by this browser.</p>"));
  }
@@ -81,7 +87,7 @@ function getNearbyLocations(latitude, longitude, resultsMap){
 
   $.get( "/get_locations/"+latitude+"/"+longitude, function(result) {
 
-    $('#location-table').html("<thead><th>Location</th><th>Comment</th></thead><tbody></tbody>"); 
+    $('#location-table').html("<thead><th>Location</th><th>Comment</th></thead><tbody></tbody>");
 
     for (var i =0; i< result['nearby_locations'].length; i++) {
 
@@ -90,9 +96,9 @@ function getNearbyLocations(latitude, longitude, resultsMap){
       html_location += "<tr><td>"+result['nearby_locations'][i]['address']+"</td>"
       html_location += "<td>"+result['nearby_locations'][i]['comment']+"</td></tr>";
       $('#location-table').append(html_location);
-      
+
       //pin a marker for each location
-      var currentLatLng = {lat: result['nearby_locations'][i]['lat'], lng: result['nearby_locations'][i]['lng']};  
+      var currentLatLng = {lat: result['nearby_locations'][i]['lat'], lng: result['nearby_locations'][i]['lng']};
       var marker = new google.maps.Marker({
         position: currentLatLng,
         map: resultsMap,
@@ -100,8 +106,8 @@ function getNearbyLocations(latitude, longitude, resultsMap){
       });
 
     }
-    $('#location-table').append("</tbody>"); 
-   
+    $('#location-table').append("</tbody>");
+
   }, "json");
 }
 
@@ -130,7 +136,7 @@ function getLocationToInsert() {
         }
       }
     });
-  }); 
+  });
   } else {
     console.log($("#error-message").html("<p>Geolocation is not supported by this browser.</p>"));
   }
@@ -164,11 +170,11 @@ function report_data(lat,lng,address){
             $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
             $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
             $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
-            $('#users_current_location').html('<p>' + address + '<p>');
+            $('#users_current_location').html('<p><strong>Your Location: </strong>' + address + '<p>');
             //resetting value of the comment field
             $('#comments').val('');
             console.log("Successfully inserted the user input",userData);
+            $(".loading-gif-bottom").hide();
    }
 });
 }
-

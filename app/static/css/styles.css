@@ -26,8 +26,8 @@
   margin: 3px auto;
 }
 #map{
-  width: 600px;
-  height: 500px;
+  width: 460px;
+  height: 460px;
 }
 #get_Location{
   display: inline-block;
@@ -35,4 +35,17 @@
 #users_current_location{
   margin-left: 40px;
   display: inline-block;
+}
+
+#report_data {
+  margin-top: 10px;
+}
+
+#divider {
+  border-bottom: 2px solid rgb(15, 82, 136);
+  margin-top: 30px;
+}
+.loading-gif{
+  text-align: center;
+  margin: 25%;
 }

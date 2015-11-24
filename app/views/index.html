@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../static/css/styles.css" type="text/css">
   <script src="../static/js/script.js"></script>
 
- 
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkDY7F_SDw4JT9Ev42KzPBLC-YsfeaeGs&signed_in=true&callback=initMap" async defer></script>
 
   <title>Community Help</title>
@@ -33,9 +33,12 @@
         </div>
         <button class="btn btn-default" id="user-current-location"><i class="fa fa-location-arrow"> Use Your Current Location</i></button>
         <div id="error-message"></div>
-        <div id ="location-list">
+        <div id="location-list">
           <h3>Locations where people may need your help!</h3>
           <table class="table table-hover" id="location-table">
+            <div class="loading-gif">
+              <img src="../static/img/loading.gif" alt="loading-gif">
+            </div>
           </table>
         </div>
 
@@ -46,18 +49,25 @@
         </div>
         <div id="map"></div>
       </div>
-    </div>
-    <!-- end of the show info section -->
-    <hr>
 
-    <!-- report area -->
-    <div class="report_data">
-        <form id="report">
-            <button class="btn btn-default " id="get_Location" ><i class="fa fa-location-arrow">Get your current Location</i></button>
+      <!-- end of the show info section -->
+      <div class="col-xs-12" id="divider"></div>
+
+      <!-- report area -->
+      <div class="report_data">
+        <div class="col-xs-6">
+          <form id="report">
+            <!-- <button class="btn btn-default " id="get_Location" ><i class="fa fa-location-arrow">Get your current Location</i></button> -->
             <div id="users_current_location"></div>
-            <textarea class="form-control" name="comments" rows="4" cols="15" placeholder="Comments" id="comments"></textarea>
-            <button id="report_data" type="submit" name="report" >Submit</button>
-        </form>
+            <textarea class="form-control" name="comments" rows="4" cols="8" placeholder="More details about what is needed, where and by who." id="comments"></textarea>
+            <button class="btn btn-primary pull-right" id="report_data" type="submit" name="report">Person Needs Help Here!</button>
+            <div class="loading-gif-bottom">
+              <img src="../static/img/loading.gif" alt="loading-gif">
+            </div>
+          </form>
+        </div>
+      </div>
+
     </div>
 
   </div>
