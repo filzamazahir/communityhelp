@@ -3,35 +3,40 @@ $(document).ready(function() {
   $(".loading-gif").hide();
   $(".loading-gif-bottom").hide();
 
-  $('form').submit(function() {
-    $(".loading-gif-bottom").show();
-    getLocationToInsert();
-    return false;
-  });
-
-
+  //Display Nearby Locations when user enters an address and clicks Find
   $("#find").on("click", function() {
     getLatLonFromAddress(geocoder, map);
   });
 
 
-  //get user input when press enter key
+  //Display Nearby Locations when user enters an address and presses 'enter'
   $("#address").keypress(function(e) {
     if (e.which === 13) {
       getLatLonFromAddress(geocoder, map);
     }
   });
 
+  //Displays Nearby Locations from the user's current location
   $("#user-current-location").on("click", function() {
     $(".loading-gif").show();
     getCurrentLocation(geocoder,map);
   });
 
+  //Inserts into database the current location where a person needs help
+  $('form').submit(function() {
+    $(".loading-gif-bottom").show();
+    getLocationToInsert();
+    return false;
+  });
+
 }); //end of document ready
 
 
+//Global variables of map and geocoder
 var map;
 var geocoder;
+
+//Initializes the map - this function is called in the callback in the Google API
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
@@ -41,6 +46,7 @@ function initMap() {
     }
   });
   geocoder = new google.maps.Geocoder();
+  getNearbyLocations(37.324538, -122.030306, map);
 
   return;
 }
@@ -88,17 +94,16 @@ function getLatLonFromAddress(geocoder, resultsMap) {
   return false;
 }
 
+
 //Gets nearby locations given a latitude & longitude
 function getNearbyLocations(latitude, longitude, resultsMap) {
+  console.log ("Inside get nearby locations");
 
   $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
     $('#location-table').html("");
-
-
-
     for (var i = 0; i < result['nearby_locations'].length; i++) {
-      //append to table for each location
+      //Append to table for each location
       var html_location = "<tr>";
       html_location += "<td>" + (i + 1) + "</td>"
       html_location += "<td>" + result['nearby_locations'][i]['address'] + "</td>"
@@ -108,7 +113,7 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
 
       $('#location-table').append(html_location);
 
-      //pin a marker for each location
+      //Pin a marker for each location
       var currentLatLng = {
         lat: result['nearby_locations'][i]['lat'],
         lng: result['nearby_locations'][i]['lng']
@@ -118,16 +123,13 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
         map: resultsMap,
         title: result['nearby_locations'][i]['address']
       });
-
-    }
-
+    } //end of for
 
   }, "json");
 }
 
 
-
-//report data logic
+//Gets location to insert data if a user is reporting a person in need of help
 function getLocationToInsert() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -136,7 +138,6 @@ function getLocationToInsert() {
         lon: position.coords.longitude
       };
       console.log(latitLongit);
-      // var currentAddress=getAddressFromLatLang(latlng['lat'],latlng['lon']);
       var geocoder = new google.maps.Geocoder();
       var latLng = new google.maps.LatLng(latitLongit.lat, latitLongit.lon);
       geocoder.geocode({
@@ -158,47 +159,29 @@ function getLocationToInsert() {
   }
 }
 
-function showError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      x.innerHTML = "User denied the request for Geolocation."
-      break;
-    case error.POSITION_UNAVAILABLE:
-      x.innerHTML = "Location information is unavailable."
-      break;
-    case error.TIMEOUT:
-      x.innerHTML = "The request to get user location timed out."
-      break;
-    case error.UNKNOWN_ERROR:
-      x.innerHTML = "An unknown error occurred."
-      break;
-  }
-}
 
-
+//Insert the location and comments into the database
 function report_data(lat,lng,address){
-    userComments=$('#comments').val();
-    userData={'lat':lat,'lng':lng,'address':address,'comments':userComments};
-    console.log(userData);
-    $.ajax({url:'/insert',
-          type:'POST',
-          data:userData,
-          success:function(data){
-            // do something with data
-            console.log(data);
-            $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
-            $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
-            $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
-            if(data.status ){
-              $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
-            }
-            else{
-               $('#users_current_location').html('<p>The location already exists within a quarter mile </p>');
-            }
-            
-            //resetting value of the comment field
-            $('#comments').val('');
-            $(".loading-gif-bottom").hide();
-   }
-});
+  userComments=$('#comments').val();
+  userData={'lat':lat,'lng':lng,'address':address,'comments':userComments};
+  console.log(userData);
+  $.ajax({url:'/insert',
+    type:'POST',
+    data:userData,
+    success:function(data){
+      $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
+      $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
+      $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
+      if(data.status ){
+        $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
+      }
+      else{
+         $('#users_current_location').html('<p>This location already exists within a quarter mile </p>');
+      }
+      
+      //resetting value of the comment field & hiding loading gif
+      $('#comments').val('');
+      $(".loading-gif-bottom").hide();
+    }
+  });
 }

@@ -59,5 +59,9 @@
   margin-left: 220px;
 }
 .loading-gif-bottom img{
-  width: 20px;
+  width: 30px;
+}
+
+.marginbotton {
+  margin-bottom: 20px;
 }
