@@ -87,14 +87,16 @@ function getNearbyLocations(latitude, longitude, resultsMap){
 
   $.get( "/get_locations/"+latitude+"/"+longitude, function(result) {
 
-    $('#location-table').html("<thead><th>Location</th><th>Comment</th></thead><tbody></tbody>");
+    $('#location-table').html("");
 
     for (var i =0; i< result['nearby_locations'].length; i++) {
-
       //append to table for each location
-      var html_location = "";
-      html_location += "<tr><td>"+result['nearby_locations'][i]['address']+"</td>"
-      html_location += "<td>"+result['nearby_locations'][i]['comment']+"</td></tr>";
+      var html_location = "<tr>";
+      html_location += "<td>"+(i+1)+"</td>"
+      html_location += "<td>"+result['nearby_locations'][i]['address']+"</td>"
+      html_location += "<td>"+result['nearby_locations'][i]['comment']+"</td>"
+      html_location += "<td>"+result['nearby_locations'][i]['distance'].toFixed(2)+"</td>"
+      html_location +="</tr>";
       $('#location-table').append(html_location);
 
       //pin a marker for each location
@@ -106,7 +108,7 @@ function getNearbyLocations(latitude, longitude, resultsMap){
       });
 
     }
-    $('#location-table').append("</tbody>");
+
 
   }, "json");
 }

@@ -46,6 +46,11 @@
   margin-top: 30px;
 }
 .loading-gif{
-  text-align: center;
-  margin: 25%;
+  display: inline;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.loading-gif img{
+  width: 30px;
 }

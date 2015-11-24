@@ -29,7 +29,7 @@ class Location(Model):
     def get_nearby_locations(self, given_location):
         lat = given_location['lat']
         lng = given_location['lng']
-        select_query = "SELECT * FROM locations WHERE (2 * 6731*0.621371* ATAN(SQRT(SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)),SQRT(1 - SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)) ) ) < 5"
+        select_query = "SELECT *, (2 * 6731*0.621371* ATAN(SQRT(SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)),SQRT(1 - SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)) ) ) AS distance FROM locations HAVING distance < 5 ORDER BY distance"
         data = [lat,lat,lat,lng,lng,lat,lat,lat,lng,lng]
         nearby_locations =  self.db.query_db(select_query, data)
         
