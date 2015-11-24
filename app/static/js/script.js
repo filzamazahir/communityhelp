@@ -124,7 +124,7 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
       var marker = new google.maps.Marker({
         position: currentLatLng,
         map: resultsMap,
-        title: 'Hello World!'
+        title: result['nearby_locations'][i]['address']
       });
 
     }
