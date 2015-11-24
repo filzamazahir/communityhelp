@@ -170,7 +170,7 @@ function report_data(lat,lng,address){
             $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
             $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
             $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
-            $('#users_current_location').html('<p><strong>Your Location: </strong>' + address + '<p>');
+            $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
             //resetting value of the comment field
             $('#comments').val('');
             console.log("Successfully inserted the user input",userData);
