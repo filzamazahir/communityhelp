@@ -11,46 +11,38 @@ $(document).ready(function() {
 
 
   $("#find").on("click", function() {
-    var geocoderMap = initMap();
-    getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
-    //return false; // test to resolve page refresh
+    getLatLonFromAddress(geocoder, map);
   });
 
 
   //get user input when press enter key
   $("#address").keypress(function(e) {
     if (e.which === 13) {
-      var geocoderMap = initMap();
-      getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
-      //return false; // test to resolve page refresh
+      getLatLonFromAddress(geocoder, map);
     }
   });
 
   $("#user-current-location").on("click", function() {
     $(".loading-gif").show();
-    var geocoderMap = initMap();
-    getCurrentLocation(geocoderMap.geocoder, geocoderMap.map);
-    //return false; // test to resolve page refresh
+    getCurrentLocation(geocoder,map);
   });
 
-});  //end of document ready
+}); //end of document ready
 
 
-//Initialize a map, with San Jose's position as default
+var map;
+var geocoder;
 function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     center: {
       lat: 37.324538,
       lng: -122.030306
     }
   });
-  var geocoder = new google.maps.Geocoder();
+  geocoder = new google.maps.Geocoder();
 
-  return {
-    'geocoder': geocoder,
-    'map': map
-  };
+  return;
 }
 
 
@@ -105,14 +97,14 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
 
 
 
-    for (var i =0; i< result['nearby_locations'].length; i++) {
+    for (var i = 0; i < result['nearby_locations'].length; i++) {
       //append to table for each location
       var html_location = "<tr>";
-      html_location += "<td>"+(i+1)+"</td>"
-      html_location += "<td>"+result['nearby_locations'][i]['address']+"</td>"
-      html_location += "<td>"+result['nearby_locations'][i]['comment']+"</td>"
-      html_location += "<td>"+result['nearby_locations'][i]['distance'].toFixed(2)+"</td>"
-      html_location +="</tr>";
+      html_location += "<td>" + (i + 1) + "</td>"
+      html_location += "<td>" + result['nearby_locations'][i]['address'] + "</td>"
+      html_location += "<td>" + result['nearby_locations'][i]['comment'] + "</td>"
+      html_location += "<td>" + result['nearby_locations'][i]['distance'].toFixed(2) + "</td>"
+      html_location += "</tr>";
 
       $('#location-table').append(html_location);
 
