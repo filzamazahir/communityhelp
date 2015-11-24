@@ -2,6 +2,7 @@ $(document).ready(function() {
 
   $(".loading-gif").hide();
   $(".loading-gif-bottom").hide();
+  getNearbyLocations(37.324538, -122.030306, map);
 
   //Display Nearby Locations when user enters an address and clicks Find
   $("#find").on("click", function() {
@@ -46,7 +47,7 @@ function initMap() {
     }
   });
   geocoder = new google.maps.Geocoder();
-  getNearbyLocations(37.324538, -122.030306, map);
+
 
   return;
 }
@@ -97,7 +98,9 @@ function getLatLonFromAddress(geocoder, resultsMap) {
 
 //Gets nearby locations given a latitude & longitude
 function getNearbyLocations(latitude, longitude, resultsMap) {
-  console.log ("Inside get nearby locations");
+  console.log("Inside get nearby locations");
+  console.log(latitude);
+  console.log(longitude);
 
   $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
@@ -178,7 +181,7 @@ function report_data(lat,lng,address){
       else{
          $('#users_current_location').html('<p>This location already exists within a quarter mile </p>');
       }
-      
+
       //resetting value of the comment field & hiding loading gif
       $('#comments').val('');
       $(".loading-gif-bottom").hide();
