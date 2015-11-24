@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
   $(".loading-gif").hide();
   $(".loading-gif-bottom").hide();
 
@@ -16,25 +17,23 @@ $(document).ready(function() {
   });
 
 
-  // get user input when press enter key
+  //get user input when press enter key
   $("#address").keypress(function(e) {
     if (e.which === 13) {
-      $("#user-current-location").on("click", function() {
-        $(".loading-gif").show();
-        var geocoderMap = initMap();
-        getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
-        }
+      var geocoderMap = initMap();
+      getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
+      //return false; // test to resolve page refresh
     }
   });
 
   $("#user-current-location").on("click", function() {
     $(".loading-gif").show();
-    console.log("Inside user current click");
     var geocoderMap = initMap();
-    //getCurrentLocation(geocoderMap.geocoder, geocoderMap.map);
-    return false; // test to resolve page refresh
+    getCurrentLocation(geocoderMap.geocoder, geocoderMap.map);
+    //return false; // test to resolve page refresh
   });
-});
+
+});  //end of document ready
 
 
 //Initialize a map, with San Jose's position as default
