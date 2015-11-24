@@ -23,6 +23,10 @@ class Locations(Controller):
         'comments':request.form['comments'],
         'address':request.form['address'],
         }
+        # existing_locations=self.models['Location'].check_for_existing_location(data)
+        # if existing_locations:
+        # 	print "location already exists"
+        # else:
         self.models['Location'].insert_into_db(data)
         return redirect('/')
 
