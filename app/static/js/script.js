@@ -11,14 +11,15 @@ $(document).ready(function() {
 
   $("#find").on("click", function() {
     var geocoderMap = initMap();
-    getLatLonFromAddress(geocoderMap['geocoder'], geocoderMap['map']);
+    getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
+    //return false; // test to resolve page refresh
   });
 
   // get user input when press enter key
   $("#address").keypress(function(e) {
     if (e.which === 13) {
       var geocoderMap = initMap();
-      getLatLonFromAddress(geocoderMap['geocoder'], geocoderMap['map']);
+      getLatLonFromAddress(geocoderMap.geocoder, geocoderMap.map);
     }
   });
 
@@ -26,8 +27,8 @@ $(document).ready(function() {
     $(".loading-gif").show();
     console.log("Inside user current click");
     var geocoderMap = initMap();
-    getCurrentLocation(geocoderMap['geocoder'], geocoderMap['map']);
-    return false;
+    //getCurrentLocation(geocoderMap.geocoder, geocoderMap.map);
+    return false; // test to resolve page refresh
   });
 });
 
@@ -89,6 +90,7 @@ function getLatLonFromAddress(geocoder, resultsMap) {
     }
 
   });
+  return false;
 }
 
 //Gets nearby locations given a latitude & longitude
