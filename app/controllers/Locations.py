@@ -14,21 +14,21 @@ class Locations(Controller):
         # result=self.models['Location'].get_all_locations();
         return self.load_view('index.html')
 
-
     #Insert new record into database
     def insert_record(self):
+    	status=""
     	data={
-        'lat':request.form['lat'],
-        'lng':request.form['lng'],
+        'lat':float(request.form['lat']),
+        'lng':float(request.form['lng']),
         'comments':request.form['comments'],
-        'address':request.form['address'],
+        'address':request.form['address']
         }
-        # existing_locations=self.models['Location'].check_for_existing_location(data)
-        # if existing_locations:
-        # 	print "location already exists"
-        # else:
-        self.models['Location'].insert_into_db(data)
-        return redirect('/')
+        success=self.models['Location'].insert_into_db(data)
+        if success:
+        	status=True
+        else:
+        	status=False
+        return jsonify(status=status)
 
 
     #Get nearby locations from database
