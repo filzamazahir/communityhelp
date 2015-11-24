@@ -8,6 +8,15 @@ class Location(Model):
         super(Location, self).__init__()
 
 
+    def check_for_existing_location(self,location_info):
+     	lat=location_info['lat']
+     	lng=location_info['lng']
+     	select_query = "SELECT * FROM locations WHERE (2 * 6731*0.621371* ATAN(SQRT(SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)),SQRT(1 - SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)) ) ) < 1"
+     	data= [lat,lat,lat,lng,lng,lat,lat,lat,lng,lng]
+     	existing_locations=self.db.query_db(select_query, data)
+     	return existing_locations
+
+
     # Insert locations into database
     def insert_into_db(self,data_info):
         query="INSERT INTO locations(lat,lng,address,comment,created_at,updated_at)VALUES(%s,%s,%s,%s,NOW(),NOW())"
@@ -17,6 +26,14 @@ class Location(Model):
     
 
     # Get locations within 5 miles, based on the Haversine formula
+    def get_nearby_locations(self, given_location):
+        lat = given_location['lat']
+        lng = given_location['lng']
+        select_query = "SELECT * FROM locations WHERE (2 * 6731*0.621371* ATAN(SQRT(SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)),SQRT(1 - SIN(RADIANS(lat-'%s')/2) * SIN(RADIANS(lat-'%s')/2) + COS(RADIANS('%s')) * COS(RADIANS(lat)) * SIN(RADIANS('%s'-lng)/2) * SIN(RADIANS('%s'-lng)/2)) ) ) < 5"
+        data = [lat,lat,lat,lng,lng,lat,lat,lat,lng,lng]
+        nearby_locations =  self.db.query_db(select_query, data)
+        
+        return nearby_locations
 
 
     

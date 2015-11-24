@@ -23,17 +23,21 @@ class Locations(Controller):
         'comments':request.form['comments'],
         'address':request.form['address'],
         }
+        # existing_locations=self.models['Location'].check_for_existing_location(data)
+        # if existing_locations:
+        # 	print "location already exists"
+        # else:
         self.models['Location'].insert_into_db(data)
         return redirect('/')
 
 
     #Get nearby locations from database
     def get_locations(self, lat, lng):
-        current_location = {
-            'lat': lat,
-            'lng': lng
+        given_location = {
+            'lat': float(lat),
+            'lng': float(lng)
         }
-        nearby_locations = self.models['Location'].get_nearby_locations(current_location)
-        print nearby_locations
-        return redirect ('/')
+        nearby_locations = self.models['Location'].get_nearby_locations(given_location)
+        return jsonify(nearby_locations = nearby_locations)
+       
 
