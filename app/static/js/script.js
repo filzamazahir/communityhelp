@@ -2,7 +2,12 @@ $(document).ready(function() {
 
   $(".loading-gif").hide();
   $(".loading-gif-bottom").hide();
-  getNearbyLocations(37.324538, -122.030306, map);
+
+  //Display Nearby locations of San Jose by default
+  $(window).load(function(){
+    getLatLonFromSanJose(geocoder, map);
+  });
+  
 
   //Display Nearby Locations when user enters an address and clicks Find
   $("#find").on("click", function() {
@@ -42,8 +47,8 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     center: {
-      lat: 37.324538,
-      lng: -122.030306
+      lat: 37.29723,
+      lng: -122.0982877
     }
   });
   geocoder = new google.maps.Geocoder();
@@ -96,11 +101,31 @@ function getLatLonFromAddress(geocoder, resultsMap) {
 }
 
 
+//Gets the latitude & longitude from an address, then calls getNearbyLocations()
+function getLatLonFromSanJose(geocoder, resultsMap) {
+  var address = 'San Jose';
+  geocoder.geocode({
+    'address': address
+  }, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      $("#error-message").html("");
+      resultsMap.setCenter(results[0].geometry.location);
+      var latitude = results[0].geometry.location.lat();
+      var longitude = results[0].geometry.location.lng();
+      console.log(latitude);
+      console.log(longitude);
+      getNearbyLocations(latitude, longitude, resultsMap);
+    } else {
+      $("#error-message").html("<p>Address is not availabble.</p>");
+    }
+
+  });
+  return false;
+}
+
+
 //Gets nearby locations given a latitude & longitude
 function getNearbyLocations(latitude, longitude, resultsMap) {
-  console.log("Inside get nearby locations");
-  console.log(latitude);
-  console.log(longitude);
 
   $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
