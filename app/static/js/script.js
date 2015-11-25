@@ -41,6 +41,7 @@ $(document).ready(function() {
 //Global variables of map and geocoder
 var map;
 var geocoder;
+var markersArray = [];
 var lastLatLonQueried;
 
 //Initializes the map - this function is called in the callback in the Google API
@@ -132,6 +133,8 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
   $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
     $('#location-table').html("");
+    clearMarkers();
+
     for (var i = 0; i < result['nearby_locations'].length; i++) {
       //Append to table for each location
       var html_location = "<tr>";
@@ -152,6 +155,7 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
         map: resultsMap,
         title: result['nearby_locations'][i]['address']
       });
+      markersArray.push(marker);
     } //end of for
 
   }, "json");
@@ -221,6 +225,7 @@ function report_data(lat,lng,address){
           map: map,
           title: data.status.newLocation['address']
         });
+        markersArray.push(marker);
       }
 
       else{
@@ -232,4 +237,12 @@ function report_data(lat,lng,address){
       $(".loading-gif-bottom").hide();
     }
   });
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+     for(var i=0; i<markersArray.length; i++){
+        markersArray[i].setMap(null);
+    }
+    markersArray = [];
 }
