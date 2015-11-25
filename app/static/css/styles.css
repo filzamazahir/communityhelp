@@ -65,3 +65,11 @@
 .marginbotton {
   margin-bottom: 20px;
 }
+
+#random-quote{
+  padding: 10px;
+  margin-top: 20px;
+  color: rgb(16, 61, 218);
+  font-style: italic;
+  font-family: fantasy sans-serif;
+}

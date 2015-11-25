@@ -7,6 +7,7 @@ from system.core.router import routes
 routes['default_controller'] = 'Locations'
 routes['POST']['/insert']='Locations#insert_record'
 routes['/get_locations/<lat>/<lng>']='Locations#get_locations'
+routes['GET']['/get-random-quote'] = 'Locations#get_random_quote'
 
 
 

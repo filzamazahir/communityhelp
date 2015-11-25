@@ -1,4 +1,4 @@
-""" 
+"""
     Location Model File
 """
 from system.core.model import Model
@@ -34,6 +34,7 @@ class Location(Model):
        	return status
     
 
+
     # Get locations within 5 miles, based on the Haversine formula
     def get_nearby_locations(self, given_location):
         lat = given_location['lat']
@@ -43,6 +44,3 @@ class Location(Model):
         nearby_locations =  self.db.query_db(select_query, data)
 
         return nearby_locations
-
-
-    
