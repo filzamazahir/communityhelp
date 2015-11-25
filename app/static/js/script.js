@@ -41,6 +41,7 @@ $(document).ready(function() {
 //Global variables of map and geocoder
 var map;
 var geocoder;
+var lastLatLonQueried;
 
 //Initializes the map - this function is called in the callback in the Google API
 function initMap() {
@@ -126,6 +127,7 @@ function getLatLonFromSanJose(geocoder, resultsMap) {
 
 //Gets nearby locations given a latitude & longitude
 function getNearbyLocations(latitude, longitude, resultsMap) {
+  lastLatLonQueried = {'lastLat':latitude, 'lastLng':longitude}
 
   $.get("/get_locations/" + latitude + "/" + longitude, function(result) {
 
@@ -191,18 +193,41 @@ function getLocationToInsert() {
 //Insert the location and comments into the database
 function report_data(lat,lng,address){
   userComments=$('#comments').val();
-  userData={'lat':lat,'lng':lng,'address':address,'comments':userComments};
+  userData={'lat':lat,'lng':lng,'address':address,'comments':userComments, 'lastLat':lastLatLonQueried['lastLat'], 'lastLng':lastLatLonQueried['lastLng'] };
   console.log(userData);
   $.ajax({url:'/insert',
     type:'POST',
     data:userData,
     success:function(data){
-      $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
-      $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
-      $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
-      if(data.status ){
+      console.log(data)
+      if(data.status.status == true && data.status.distance < 5){
         $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
       }
+      else if (data.status.status == true && data.status.distance > 5){
+        console.log ("New location to be added to table")
+        console.log(data.status.newLocation['address']);
+        console.log(data.status.newLocation['comment']);
+        console.log(data.status.distance);
+        $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
+        var html_location = "<tr>";
+        html_location += "<td>" + 2 + "</td>"
+        html_location += "<td>" + data.status.newLocation['address'] + "</td>"
+        html_location += "<td>" + data.status.newLocation['comments'] + "</td>"
+        html_location += "<td>" + data.status.distance.toFixed(2) + "</td>"
+        html_location += "</tr>";
+        $('#location-table').append(html_location);
+
+        var currentLatLng = {
+          lat: data.status.newLocation['lat'],
+          lng: data.status.newLocation['lng']
+        };
+        var marker = new google.maps.Marker({
+          position: currentLatLng,
+          map: map,
+          title: data.status.newLocation['address']
+        });
+      }
+
       else{
          $('#users_current_location').html('<p>This location already exists within a quarter mile </p>');
       }

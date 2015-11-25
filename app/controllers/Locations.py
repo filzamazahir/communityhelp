@@ -15,18 +15,26 @@ class Locations(Controller):
 
     #Insert new record into database
     def insert_record(self):
-    	status=""
+        status = {}
     	data={
         'lat':float(request.form['lat']),
         'lng':float(request.form['lng']),
         'comments':request.form['comments'],
-        'address':request.form['address']
+        'address':request.form['address'],
+        'lastLat':float(request.form['lastLat']),
+        'lastLng':float(request.form['lastLng'])
         }
-        success=self.models['Location'].insert_into_db(data)
-        if success:
-        	status=True
+        insert_status=self.models['Location'].insert_into_db(data)
+        if insert_status['status']:
+            status = {
+                'status':True,
+                'distance': insert_status['distance'],
+                'newLocation':data
+                }
+            print "New Location needs to be added"
         else:
-        	status=False
+        	status = {'status':False, 'distance':None}
+
         return jsonify(status=status)
 
 
