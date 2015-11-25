@@ -135,7 +135,6 @@ function getNearbyLocations(latitude, longitude, resultsMap) {
     for (var i = 0; i < result['nearby_locations'].length; i++) {
       //Append to table for each location
       var html_location = "<tr>";
-      html_location += "<td>" + (i + 1) + "</td>"
       html_location += "<td>" + result['nearby_locations'][i]['address'] + "</td>"
       html_location += "<td>" + result['nearby_locations'][i]['comment'] + "</td>"
       html_location += "<td>" + result['nearby_locations'][i]['distance'].toFixed(2) + "</td>"
@@ -200,17 +199,13 @@ function report_data(lat,lng,address){
     data:userData,
     success:function(data){
       console.log(data)
-      if(data.status.status == true && data.status.distance < 5){
+      if(data.status.status == true && data.status.distance > 5){
         $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
       }
-      else if (data.status.status == true && data.status.distance > 5){
-        console.log ("New location to be added to table")
-        console.log(data.status.newLocation['address']);
-        console.log(data.status.newLocation['comment']);
-        console.log(data.status.distance);
+      else if (data.status.status == true && data.status.distance < 5){
+        console.log (data.status);
         $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
         var html_location = "<tr>";
-        html_location += "<td>" + 2 + "</td>"
         html_location += "<td>" + data.status.newLocation['address'] + "</td>"
         html_location += "<td>" + data.status.newLocation['comments'] + "</td>"
         html_location += "<td>" + data.status.distance.toFixed(2) + "</td>"
