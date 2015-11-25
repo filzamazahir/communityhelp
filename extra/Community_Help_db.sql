@@ -29,12 +29,17 @@ CREATE TABLE IF NOT EXISTS `Community_Help_db`.`locations` (
 ENGINE = InnoDB;
 
 
-CREATE TABLE `quotes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text,
-  `quoted_by` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `Community_Help_db`.`quotes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Community_Help_db`.`quotes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `content` TEXT NULL,
+  `quoted_by` VARCHAR(255) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
