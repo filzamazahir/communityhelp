@@ -172,9 +172,6 @@ function report_data(lat,lng,address){
     type:'POST',
     data:userData,
     success:function(data){
-      $('.report_data').append('<input type="hidden" id="lat" name="Lat" value=' + lat+ '>');
-      $('.report_data').append('<input type="hidden" id="lng" name="Lng" value=' + lng+ '>');
-      $('.report_data').append('<input type="hidden" id="address" name="address" value=' + address+ '>');
       if(data.status ){
         $('#users_current_location').html('<p><strong>Location Added: </strong>' + address + '<p>');
       }
@@ -188,3 +185,4 @@ function report_data(lat,lng,address){
     }
   });
 }
+1
