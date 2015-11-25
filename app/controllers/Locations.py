@@ -48,12 +48,3 @@ class Locations(Controller):
         nearby_locations = self.models['Location'].get_nearby_locations(given_location)
         return jsonify(nearby_locations = nearby_locations)
 
-
-    def get_random_quote(self):
-        quote = Quote()
-        try:
-            random_quote = quote.get_random_quote()
-        except Exception as e:
-            random_quote = {'content': "Error: table quote does not exist." , 'quoted_by': 'None'}
-
-        return jsonify(random_quote=random_quote)
