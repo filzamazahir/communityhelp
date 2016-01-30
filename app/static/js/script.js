@@ -11,11 +11,12 @@ $(document).ready(function() {
     $.get("/get-random-quote", function(data){
       console.log(data.random_quote.content);
       console.log(data.random_quote.quoted_by);
-      $("#quote-title").text("Random Quote");
       $("#quote-content").text(data.random_quote.content);
-      $("#quoted_by").text("By " + data.random_quote.quoted_by);
+      $("#quoted_by").text("- " + data.random_quote.quoted_by);
     }, "json");
   });
+
+
 
 
   //Display Nearby Locations when user enters an address and clicks Find
