@@ -27,5 +27,7 @@ Start the development server::
 ```
 python manage.py runserver
 ```
-To See a working demo of the app, follow the lonk below:-
+
+# Demo
+To see a working demo of the app, follow the link below:-
 https://cloud.githubusercontent.com/assets/12706707/13446296/11284700-dfc7-11e5-9d75-cb29670a6901.gif
